@@ -15,6 +15,8 @@ import VendorOnboarding from './pages/vendor/VendorOnboarding';
 import OnboardingComplete from './pages/vendor/OnboardingComplete';
 import OnboardingRefresh from './pages/vendor/OnboardingRefresh';
 import AdminPanel from './pages/admin/AdminPanel';
+import Checkout from './pages/product/Checkout';
+import Orders from './pages/product/Orders';
 
 function AppRoutes() {
   return (
@@ -33,6 +35,8 @@ function AppRoutes() {
       <Route path="/vendor/onboarding/refresh" element={<ProtectedRoute allowedRoles={['vendor']}><OnboardingRefresh /></ProtectedRoute>} />
       <Route path="/vendor/products/new" element={<ProtectedRoute allowedRoles={['vendor']}><ProductForm /></ProtectedRoute>} />
       <Route path="/vendor/products/:id/edit" element={<ProtectedRoute allowedRoles={['vendor']}><ProductForm /></ProtectedRoute>} />
+<Route path="/checkout" element={<ProtectedRoute allowedRoles={['buyer']}><Checkout /></ProtectedRoute>} />
+<Route path="/orders" element={<ProtectedRoute allowedRoles={['buyer']}><Orders /></ProtectedRoute>} />
 
       <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminPanel /></ProtectedRoute>} />
     </Routes>
