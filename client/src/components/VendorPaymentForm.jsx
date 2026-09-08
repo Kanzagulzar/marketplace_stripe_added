@@ -27,7 +27,12 @@ export default function VendorPaymentForm({ onPaid }) {
 
     // requires_capture means the card is authorized and funds are held — correct for escrow
     if (paymentIntent && (paymentIntent.status === 'requires_capture' || paymentIntent.status === 'succeeded')) {
-      onPaid();
+      try {
+        await onPaid();
+      } catch (err) {
+        setError(err.response?.data?.error || 'Payment was authorized, but we could not update the order');
+        setProcessing(false);
+      }
     } else {
       setError('Payment did not complete');
       setProcessing(false);
