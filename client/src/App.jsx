@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import OrderDetail from './pages/product/OrderDetail';
 
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
@@ -17,6 +18,8 @@ import OnboardingRefresh from './pages/vendor/OnboardingRefresh';
 import AdminPanel from './pages/admin/AdminPanel';
 import Checkout from './pages/product/Checkout';
 import Orders from './pages/product/Orders';
+import VendorOrders from './pages/vendor/VendorOrders';
+import AdminDisputes from './pages/admin/AdminDisputes';
 
 function AppRoutes() {
   return (
@@ -28,7 +31,8 @@ function AppRoutes() {
       <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
       <Route path="/products/:id" element={<ProtectedRoute><ProductDetail /></ProtectedRoute>} />
       <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
-
+<Route path="/orders/:orderId" element={<ProtectedRoute allowedRoles={['buyer']}><OrderDetail /></ProtectedRoute>} />
+     <Route path="/admin/disputes" element={<ProtectedRoute allowedRoles={['admin']}><AdminDisputes /></ProtectedRoute>} />
       <Route path="/vendor/dashboard" element={<ProtectedRoute allowedRoles={['vendor']}><VendorDashboard /></ProtectedRoute>} />
       <Route path="/vendor/onboarding" element={<ProtectedRoute allowedRoles={['vendor']}><VendorOnboarding /></ProtectedRoute>} />
       <Route path="/vendor/onboarding/complete" element={<ProtectedRoute allowedRoles={['vendor']}><OnboardingComplete /></ProtectedRoute>} />
@@ -37,9 +41,10 @@ function AppRoutes() {
       <Route path="/vendor/products/:id/edit" element={<ProtectedRoute allowedRoles={['vendor']}><ProductForm /></ProtectedRoute>} />
 <Route path="/checkout" element={<ProtectedRoute allowedRoles={['buyer']}><Checkout /></ProtectedRoute>} />
 <Route path="/orders" element={<ProtectedRoute allowedRoles={['buyer']}><Orders /></ProtectedRoute>} />
-
+<Route path="/vendor/orders" element={<ProtectedRoute allowedRoles={['vendor']}><VendorOrders /></ProtectedRoute>} />
       <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminPanel /></ProtectedRoute>} />
     </Routes>
+    
   );
 }
 

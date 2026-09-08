@@ -79,14 +79,48 @@ exports.checkout = async (req, res) => {
 
 // Called by webhook once a specific order's PaymentIntent is authorized
 exports.markPaid = async (orderId) => {
-  const order = await Order.findById(orderId);
-  if (!order || order.status !== 'pending') return;
-
-  order.transitionTo('paid', 'Payment authorized');
-  await order.save();
+  // This conditional update makes the webhook and the browser confirmation
+  // endpoint safely idempotent when they arrive at nearly the same time.
+  const order = await Order.findOneAndUpdate(
+    { _id: orderId, status: 'pending' },
+    {
+      $set: { status: 'paid' },
+      $push: { statusHistory: { status: 'paid', note: 'Payment authorized' } }
+    },
+    { new: true }
+  );
+  if (!order) return null;
 
   for (const item of order.items) {
     await Product.findByIdAndUpdate(item.productId, { $inc: { stock: -item.qty } });
+  }
+
+  return order;
+};
+
+// Fallback for local development and a faster buyer experience. The client can
+// only request this for its own order; Stripe remains the source of truth.
+exports.confirmPayment = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.orderId);
+    if (!order) return res.status(404).json({ error: 'Order not found' });
+    if (order.buyerId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ error: 'Not your order' });
+    }
+    if (!order.paymentIntentId) {
+      return res.status(400).json({ error: 'Order has no payment intent' });
+    }
+
+    const paymentIntent = await stripe.paymentIntents.retrieve(order.paymentIntentId);
+    if (!['requires_capture', 'succeeded'].includes(paymentIntent.status)) {
+      return res.status(400).json({ error: 'Payment has not been authorized' });
+    }
+
+    const paidOrder = await exports.markPaid(order._id);
+    res.json(paidOrder || await Order.findById(order._id));
+  } catch (err) {
+    console.error('Failed to confirm payment:', err);
+    res.status(500).json({ error: 'Failed to confirm payment' });
   }
 };
 
@@ -120,6 +154,16 @@ exports.getOrderById = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch order' });
+  }
+};
+
+exports.getAllOrdersAdmin = async (req, res) => {
+  try {
+    const orders = await Order.find().sort('-createdAt');
+    res.json(orders);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch orders' });
   }
 };
 

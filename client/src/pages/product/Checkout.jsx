@@ -4,6 +4,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import VendorPaymentForm from '../../components/VendorPaymentForm';
 import { useCart } from '../../context/CartContext';
+import { confirmPayment } from '../../api/order.api';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -21,7 +22,8 @@ export default function Checkout() {
   const { orders } = state;
   const allPaid = paidIds.length === orders.length;
 
-  const handlePaid = (orderId) => {
+  const handlePaid = async (orderId) => {
+    await confirmPayment(orderId);
     setPaidIds((prev) => [...prev, orderId]);
   };
 

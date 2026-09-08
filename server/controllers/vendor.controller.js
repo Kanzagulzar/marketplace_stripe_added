@@ -54,6 +54,21 @@ exports.getOnboardingLink = async (req, res) => {
     const vendor = await Vendor.findOne({ userId: req.user._id });
     if (!vendor) return res.status(404).json({ error: 'Vendor profile not found' });
 
+    // Backfill: older vendor records created before Stripe integration existed
+    // won't have a stripeAccountId yet — create one now if missing.
+    if (!vendor.stripeAccountId) {
+      const account = await stripe.accounts.create({
+        type: 'express',
+        email: req.user.email,
+        capabilities: {
+          card_payments: { requested: true },
+          transfers: { requested: true }
+        }
+      });
+      vendor.stripeAccountId = account.id;
+      await vendor.save();
+    }
+
     const accountLink = await stripe.accountLinks.create({
       account: vendor.stripeAccountId,
       refresh_url: `${process.env.CLIENT_URL}/vendor/onboarding/refresh`,
