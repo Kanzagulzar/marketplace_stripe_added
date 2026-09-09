@@ -3,11 +3,17 @@ const User = require('../models/user');
 
 const generateToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
+// const COOKIE_OPTIONS = {
+//   httpOnly: true,          // JS on the frontend can't read this cookie — blocks XSS token theft
+//   secure: process.env.NODE_ENV === 'production', // HTTPS only in prod; allow http in local dev
+//   sameSite: 'strict',      // blocks the cookie being sent on cross-site requests — CSRF protection
+//   maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days, matches JWT expiry
+// };
 const COOKIE_OPTIONS = {
-  httpOnly: true,          // JS on the frontend can't read this cookie — blocks XSS token theft
-  secure: process.env.NODE_ENV === 'production', // HTTPS only in prod; allow http in local dev
-  sameSite: 'strict',      // blocks the cookie being sent on cross-site requests — CSRF protection
-  maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days, matches JWT expiry
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict', // 'none' allows cross-site cookies
+  maxAge: 7 * 24 * 60 * 60 * 1000
 };
 
 exports.register = async (req, res) => {
