@@ -47,8 +47,7 @@ exports.createVendorProfile = async (req, res) => {
     res.status(500).json({ error: 'Failed to create vendor profile' });
   }
 };
-
-// Generates the one-time Stripe-hosted onboarding link
+//hi
 exports.getOnboardingLink = async (req, res) => {
   try {
     const vendor = await Vendor.findOne({ userId: req.user._id });
@@ -56,6 +55,9 @@ exports.getOnboardingLink = async (req, res) => {
 
     // Backfill: older vendor records created before Stripe integration existed
     // won't have a stripeAccountId yet — create one now if missing.
+
+
+
     if (!vendor.stripeAccountId) {
       const account = await stripe.accounts.create({
         type: 'express',
