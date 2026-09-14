@@ -8,6 +8,7 @@ import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Unauthorized from './pages/Unauthorized';
 import Home from './pages/buyer/Home';
+import RoleHome from './components/RoleHome';
 import ProductDetail from './pages/product/ProductDetail';
 import ProductForm from './pages/product/ProductForm';
 import Cart from './pages/product/Cart';
@@ -20,6 +21,7 @@ import Checkout from './pages/product/Checkout';
 import Orders from './pages/product/Orders';
 import VendorOrders from './pages/vendor/VendorOrders';
 import AdminDisputes from './pages/admin/AdminDisputes';
+import VendorStorefront from './pages/product/VendorStorefront';
 
 function AppRoutes() {
   return (
@@ -28,7 +30,8 @@ function AppRoutes() {
       <Route path="/register" element={<Register />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
 
-      <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+      <Route path="/" element={<ProtectedRoute><RoleHome /></ProtectedRoute>} />
+      <Route path="/products" element={<ProtectedRoute allowedRoles={['buyer']}><Home /></ProtectedRoute>} />
       <Route path="/products/:id" element={<ProtectedRoute><ProductDetail /></ProtectedRoute>} />
       <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
 <Route path="/orders/:orderId" element={<ProtectedRoute allowedRoles={['buyer']}><OrderDetail /></ProtectedRoute>} />
@@ -38,6 +41,9 @@ function AppRoutes() {
       <Route path="/vendor/onboarding/complete" element={<ProtectedRoute allowedRoles={['vendor']}><OnboardingComplete /></ProtectedRoute>} />
       <Route path="/vendor/onboarding/refresh" element={<ProtectedRoute allowedRoles={['vendor']}><OnboardingRefresh /></ProtectedRoute>} />
       <Route path="/vendor/products/new" element={<ProtectedRoute allowedRoles={['vendor']}><ProductForm /></ProtectedRoute>} />
+     
+<Route path="/store/:slug" element={<ProtectedRoute><VendorStorefront /></ProtectedRoute>} />
+
       <Route path="/vendor/products/:id/edit" element={<ProtectedRoute allowedRoles={['vendor']}><ProductForm /></ProtectedRoute>} />
 <Route path="/checkout" element={<ProtectedRoute allowedRoles={['buyer']}><Checkout /></ProtectedRoute>} />
 <Route path="/orders" element={<ProtectedRoute allowedRoles={['buyer']}><Orders /></ProtectedRoute>} />
@@ -53,7 +59,9 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <CartProvider>
-          <AppRoutes />
+          <div className="app-shell">
+            <AppRoutes />
+          </div>
         </CartProvider>
       </AuthProvider>
     </BrowserRouter>

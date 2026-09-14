@@ -134,16 +134,16 @@ export default function AdminDisputes() {
     <div style={{ maxWidth: 600, margin: '2rem auto', padding: '0 1rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <h1 style={{ fontSize: 20, fontWeight: 500, margin: 0 }}>Disputes</h1>
-        <Link to="/admin" style={{ fontSize: 13, color: '#185fa5' }}>← Back to admin</Link>
+        <Link className="back-link" to="/admin" style={{ fontSize: 13, color: '#185fa5' }}>← Back to admin</Link>
       </div>
 
-      <button
+      {/* <button
         onClick={handleRunEscrowJob}
         disabled={runningJob}
         style={{ fontSize: 13, padding: '8px 14px', marginBottom: '1.5rem', border: '1px dashed #999' }}
       >
         {runningJob ? 'Running...' : '⚙ Run escrow release job (testing only)'}
-      </button>
+      </button> */}
 
       {orders.length === 0 && <p style={{ fontSize: 14, color: '#666' }}>No open disputes.</p>}
 
@@ -162,7 +162,7 @@ export default function AdminDisputes() {
                 </p>
               )}
               <div style={{ display: 'flex', gap: 8 }}>
-                <button onClick={() => handleResolve(o._id, 'refund')} disabled={resolvingId === o._id} style={{ fontSize: 13, padding: '6px 12px' }}>
+                <button className="button-danger" onClick={() => handleResolve(o._id, 'refund')} disabled={resolvingId === o._id} style={{ fontSize: 13, padding: '6px 12px' }}>
                   Refund buyer
                 </button>
                 <button onClick={() => handleResolve(o._id, 'release')} disabled={resolvingId === o._id} style={{ fontSize: 13, padding: '6px 12px' }}>

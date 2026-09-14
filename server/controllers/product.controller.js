@@ -1,12 +1,37 @@
 const Product = require('../models/Product');
 const Vendor = require('../models/vendor');
+const cloudinary = require('../config/cloudinary');
+
+exports.uploadImage = async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+
+    // Upload the in-memory buffer to Cloudinary via a stream
+    const uploadResult = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: 'marketplace-products' },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+      stream.end(req.file.buffer);
+    });
+
+    res.json({ url: uploadResult.secure_url });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Image upload failed' });
+  }
+};
 
 exports.getAllProducts = async (req, res) => {
   try {
-    const { category, search } = req.query;
+    const { category, search, vendor } = req.body?.query || req.query;
     const filter = { status: 'active' };
     if (category) filter.category = category;
     if (search) filter.title = { $regex: search, $options: 'i' };
+    if (vendor) filter.vendorId = vendor;
 
     const products = await Product.find(filter)
       .populate('vendorId', 'storeName storeSlug rating')

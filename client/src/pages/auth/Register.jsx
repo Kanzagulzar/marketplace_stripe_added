@@ -17,8 +17,8 @@ export default function Register() {
     setError('');
     setLoading(true);
     try {
-      await register(form);
-      navigate('/');
+      const registeredUser = await register(form);
+      navigate(registeredUser.role === 'vendor' ? '/vendor/dashboard' : '/');
     } catch (err) {
       setError(err.response?.data?.error || 'Registration failed');
     } finally {

@@ -45,6 +45,7 @@ export default function VendorDashboard() {
 
   return (
     <div style={{ maxWidth: 600, margin: '2rem auto', padding: '0 1rem' }}>
+      <Link className="back-link" to="/" style={{ fontSize: 13, color: '#185fa5' }}>← Back to marketplace</Link>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
   <h1 style={{ fontSize: 20, fontWeight: 500, margin: 0 }}>{vendor.storeName}</h1>
   {vendor.status === 'approved' && (
@@ -98,7 +99,7 @@ export default function VendorDashboard() {
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
                   <Link to={`/vendor/products/${p._id}/edit`} style={{ fontSize: 13, color: '#185fa5' }}>Edit</Link>
-                  <button onClick={() => handleDelete(p._id)} style={{ fontSize: 13, color: '#c0392b' }}>Delete</button>
+                  <button className="button-danger" onClick={() => handleDelete(p._id)} style={{ fontSize: 13, color: '#c0392b' }}>Delete</button>
                 </div>
               </div>
             ))}

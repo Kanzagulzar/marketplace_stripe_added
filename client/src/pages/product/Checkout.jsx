@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import VendorPaymentForm from '../../components/VendorPaymentForm';
@@ -34,6 +34,7 @@ export default function Checkout() {
 
   return (
     <div style={{ maxWidth: 480, margin: '2rem auto', padding: '0 1rem' }}>
+      <Link className="back-link" to="/cart" style={{ fontSize: 13, color: '#185fa5' }}>← Back to cart</Link>
       <h1 style={{ fontSize: 20, fontWeight: 500, marginBottom: '0.5rem' }}>Payment</h1>
       <p style={{ fontSize: 13, color: '#666', marginBottom: '1.5rem' }}>
         Your cart included {orders.length} seller{orders.length > 1 ? 's' : ''} — pay each one below.
@@ -57,7 +58,7 @@ export default function Checkout() {
       ))}
 
       {allPaid && (
-        <button onClick={handleDone} style={{ width: '100%', padding: 12, fontSize: 14 }}>
+        <button onClick={handleDone} style={{ padding: '10px 18px', fontSize: 14 }}>
           Done — view my orders
         </button>
       )}

@@ -17,8 +17,8 @@ export default function Login() {
     setError('');
     setLoading(true);
     try {
-      await login(form.email, form.password);
-      navigate('/');
+      const loggedInUser = await login(form.email, form.password);
+      navigate(loggedInUser.role === 'vendor' ? '/vendor/dashboard' : loggedInUser.role === 'admin' ? '/admin' : '/');
     } catch (err) {
       setError(err.response?.data?.error || 'Invalid email or password');
     } finally {

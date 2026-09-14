@@ -107,13 +107,14 @@ export default function Cart() {
     return (
       <div style={{ maxWidth: 480, margin: '3rem auto', textAlign: 'center', padding: '0 1rem' }}>
         <p style={{ fontSize: 14, color: '#666', marginBottom: '1rem' }}>Your cart is empty.</p>
-        <Link to="/" style={{ fontSize: 14, color: '#185fa5' }}>Browse products</Link>
+        <Link className="back-link" to="/" style={{ fontSize: 14, color: '#185fa5' }}>← Back to marketplace</Link>
       </div>
     );
   }
 
   return (
     <div style={{ maxWidth: 480, margin: '2rem auto', padding: '0 1rem' }}>
+      <Link className="back-link" to="/" style={{ fontSize: 13, color: '#185fa5' }}>← Back to marketplace</Link>
       <h1 style={{ fontSize: 20, fontWeight: 500, marginBottom: '1rem' }}>Your cart</h1>
 
       {groupedByVendor.map((group) => (
@@ -125,7 +126,7 @@ export default function Cart() {
                 <p style={{ fontSize: 14, margin: 0 }}>{item.title}</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <input type="number" min="1" value={item.qty} onChange={(e) => updateQty(item.productId, Math.max(1, Number(e.target.value)))} style={{ width: 48, fontSize: 12 }} />
-                  <button onClick={() => removeItem(item.productId)} style={{ fontSize: 12, color: '#c0392b' }}>Remove</button>
+                  <button className="button-danger" onClick={() => removeItem(item.productId)} style={{ fontSize: 12, color: '#c0392b' }}>Remove</button>
                 </div>
               </div>
               <p style={{ fontSize: 14, fontWeight: 500, margin: 0 }}>${((item.price * item.qty) / 100).toFixed(2)}</p>
@@ -139,7 +140,7 @@ export default function Cart() {
         <p style={{ fontSize: 20, fontWeight: 500 }}>${(total / 100).toFixed(2)}</p>
       </div>
 
-      <button onClick={handleCheckout} style={{ width: '100%', padding: 12, fontSize: 14 }}>Checkout</button>
+      <button onClick={handleCheckout} style={{ padding: '10px 18px', fontSize: 14 }}>Checkout</button>
     </div>
   );
 }
