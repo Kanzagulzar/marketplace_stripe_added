@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const roleCheck = require('../middleware/roleCheck');
 const ctrl = require('../controllers/product.controller');
+const upload = require('../middleware/upload');
 
 // Order matters: /vendor/mine must come before /:id, or Express will
 // treat "vendor" as an :id param and hit the wrong handler.
@@ -13,5 +14,6 @@ router.get('/:id', ctrl.getProductById);
 router.post('/', auth, roleCheck('vendor'), ctrl.createProduct);
 router.patch('/:id', auth, roleCheck('vendor'), ctrl.updateProduct);
 router.delete('/:id', auth, roleCheck('vendor'), ctrl.deleteProduct);
+router.post('/upload-image', auth, roleCheck('vendor'), upload.single('image'), ctrl.uploadImage);
 
 module.exports = router;

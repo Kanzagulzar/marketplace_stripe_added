@@ -48,7 +48,7 @@ export default function VendorOrders() {
     <div style={{ maxWidth: 600, margin: '2rem auto', padding: '0 1rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <h1 style={{ fontSize: 20, fontWeight: 500, margin: 0 }}>Orders</h1>
-        <Link to="/vendor/dashboard" style={{ fontSize: 13, color: '#185fa5' }}>← Back to dashboard</Link>
+        <Link className="back-link" to="/vendor/dashboard" style={{ fontSize: 13, color: '#185fa5' }}>← Back to dashboard</Link>
       </div>
 
       {error && <p style={{ fontSize: 13, color: '#c0392b', marginBottom: 12 }}>{error}</p>}

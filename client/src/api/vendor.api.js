@@ -7,3 +7,5 @@ export const checkOnboardingStatus = () => api.get('/vendors/onboarding-status')
 
 export const listVendors = () => api.get('/vendors');
 export const updateVendorStatus = (vendorId, status) => api.patch(`/vendors/${vendorId}/status`, { status });
+
+export const getVendorBySlug = (slug) => api.get(`/vendors/store/${slug}`);

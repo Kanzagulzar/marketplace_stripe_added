@@ -14,6 +14,7 @@ export default function Orders() {
 
   return (
     <div style={{ maxWidth: 480, margin: '2rem auto', padding: '0 1rem' }}>
+      <Link className="back-link" to="/" style={{ fontSize: 13, color: '#185fa5' }}>← Back to marketplace</Link>
       <h1 style={{ fontSize: 20, fontWeight: 500, marginBottom: '1rem' }}>My orders</h1>
       {orders.length === 0 && <p style={{ fontSize: 14, color: '#666' }}>No orders yet.</p>}
       <div style={{ border: '1px solid #e5e5e5', borderRadius: 10, overflow: 'hidden' }}>

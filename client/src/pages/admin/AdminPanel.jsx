@@ -139,6 +139,17 @@ export default function AdminPanel() {
         padding: '0 1rem',
       }}
     >
+      <Link
+        to="/"
+        className="back-link"
+        style={{
+          fontSize: 13,
+          color: '#185fa5',
+          textDecoration: 'none',
+        }}
+      >
+        ← Back to marketplace
+      </Link>
       {/* Header */}
       <div
         style={{

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { createVendorProfile, getOnboardingLink } from '../../api/vendor.api';
 
 export default function VendorOnboarding() {
@@ -22,6 +23,7 @@ export default function VendorOnboarding() {
 
   return (
     <div style={{ maxWidth: 380, margin: '3rem auto', padding: '0 1rem' }}>
+      <Link className="back-link" to="/vendor/dashboard" style={{ fontSize: 13, color: '#185fa5' }}>← Back to dashboard</Link>
       <h1 style={{ fontSize: 20, fontWeight: 500, marginBottom: '1rem' }}>Set up your store</h1>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <input

@@ -43,7 +43,7 @@ export default function VendorPaymentForm({ onPaid }) {
     <form onSubmit={handleSubmit}>
       <PaymentElement />
       {error && <p style={{ fontSize: 12, color: '#c0392b', marginTop: 8 }}>{error}</p>}
-      <button type="submit" disabled={!stripe || processing} style={{ width: '100%', padding: 10, fontSize: 13, marginTop: 10 }}>
+      <button type="submit" disabled={!stripe || processing} style={{ padding: '8px 16px', fontSize: 13, marginTop: 10 }}>
         {processing ? 'Processing...' : 'Pay'}
       </button>
     </form>
